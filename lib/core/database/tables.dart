@@ -70,7 +70,7 @@ class SleepEntries extends Table {
   DateTimeColumn get horaLevantarse => dateTime().nullable()();
 }
 
-/// Cada fila = un vaso/toma de agua.
+/// Cada fila = una toma de agua, en mililitros (la UI los muestra en litros).
 class WaterEntries extends Table {
   IntColumn get id => integer().autoIncrement()();
   DateTimeColumn get fecha => dateTime()();

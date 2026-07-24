@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../../app/appbar_volver.dart';
 import '../../../core/database/database.dart';
 import '../../../core/ia/api_key_storage.dart';
 import '../../../core/ia/gemini_api_service.dart';
@@ -190,7 +191,7 @@ class _AjustesScreenState extends ConsumerState<AjustesScreen> {
     final hayKey = keyAsync.value?.isNotEmpty == true;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Ajustes')),
+      appBar: appBarConVolver(context, 'Ajustes'),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [

@@ -12,6 +12,7 @@ import '../../pasos/domain/calculo_pasos.dart';
 import '../../pasos/presentation/pasos_providers.dart';
 import '../../perfil/domain/unidades.dart';
 import '../../perfil/presentation/perfil_providers.dart';
+import '../../sueno/domain/agua_formato.dart';
 import '../../sueno/presentation/habitos_providers.dart';
 import '../../sueno/presentation/registrar_sueno_sheet.dart';
 import 'widgets/anillo_calorias.dart';
@@ -158,8 +159,6 @@ class DashboardScreen extends ConsumerWidget {
     final kcalEjercicio =
         ejercicios.fold<double>(0, (s, e) => s + e.caloriasQuemadas) +
             kcalPasos;
-    final vasos = (aguaMl / 250).round();
-    final vasosObjetivo = (perfil.objetivoAguaMl / 250).ceil();
     final ultimoPeso = pesos.isEmpty ? null : pesos.last.pesoKg;
 
     final textoPasos = switch (estadoContador) {
@@ -185,17 +184,18 @@ class DashboardScreen extends ConsumerWidget {
                 context,
                 emoji: '💧',
                 titulo: 'Agua',
-                valor: '$vasos / $vasosObjetivo vasos',
-                // Tap suma un vaso; el ícono "-" deshace el último.
+                valor: '${formatearLitros(aguaMl)} / '
+                    '${formatearLitros(perfil.objetivoAguaMl)} L',
+                // Tap suma 250 ml; el ícono "-" deshace la última toma.
                 onTap: () =>
-                    ref.read(habitosRepositoryProvider).agregarVaso(),
-                accionExtra: vasos > 0
+                    ref.read(habitosRepositoryProvider).agregarAgua(),
+                accionExtra: aguaMl > 0
                     ? IconButton(
                         icon: const Icon(Icons.remove_circle_outline),
                         visualDensity: VisualDensity.compact,
                         onPressed: () => ref
                             .read(habitosRepositoryProvider)
-                            .quitarUltimoVaso(),
+                            .quitarUltimaToma(),
                       )
                     : null,
               ),

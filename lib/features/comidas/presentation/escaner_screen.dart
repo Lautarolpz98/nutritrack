@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
+import '../../../app/appbar_volver.dart';
 import '../../../core/database/database_provider.dart';
 import '../data/open_food_facts_service.dart';
 import '../data/productos_repository.dart';
@@ -89,7 +90,7 @@ class _EscanerScreenState extends ConsumerState<EscanerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Escanear producto')),
+      appBar: appBarConVolver(context, 'Escanear producto'),
       body: Stack(
         children: [
           MobileScanner(controller: _controller, onDetect: _onDetect),

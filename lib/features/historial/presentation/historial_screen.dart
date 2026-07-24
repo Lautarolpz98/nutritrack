@@ -4,8 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../../app/appbar_volver.dart';
 import '../../../core/database/database.dart';
 import '../../comidas/domain/totales_dia.dart';
+import '../../sueno/domain/agua_formato.dart';
 import 'historial_providers.dart';
 
 /// Historial: pestaña Calendario (resumen de un día) y pestaña Gráficos
@@ -27,8 +29,9 @@ class _HistorialScreenState extends ConsumerState<HistorialScreen> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Historial'),
+        appBar: appBarConVolver(
+          context,
+          'Historial',
           bottom: const TabBar(tabs: [
             Tab(icon: Icon(Icons.calendar_month), text: 'Calendario'),
             Tab(icon: Icon(Icons.insights), text: 'Gráficos'),
@@ -112,7 +115,7 @@ class _HistorialScreenState extends ConsumerState<HistorialScreen> {
                 Text('🏃 ${kcalEjercicio.round()} kcal quemadas '
                     '(${ejercicios.length} actividades)'),
                 const SizedBox(height: 4),
-                Text('💧 $aguaMl ml de agua'),
+                Text('💧 ${formatearLitros(aguaMl)} L de agua'),
                 const SizedBox(height: 4),
                 Text(sueno == null
                     ? '😴 Sin registro de sueño'

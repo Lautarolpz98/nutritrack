@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../app/appbar_volver.dart';
 import '../../../core/database/database.dart';
 import '../../../core/modelos/enums.dart';
 import 'comidas_providers.dart';
@@ -110,9 +111,8 @@ class _AgregarComidaScreenState extends ConsumerState<AgregarComidaScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(_esEdicion ? 'Editar comida' : 'Agregar comida'),
-      ),
+      appBar: appBarConVolver(
+          context, _esEdicion ? 'Editar comida' : 'Agregar comida'),
       body: Form(
         key: _formKey,
         child: ListView(

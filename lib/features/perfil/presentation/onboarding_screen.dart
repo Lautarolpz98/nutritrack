@@ -120,7 +120,15 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Tu perfil')),
+      appBar: AppBar(
+        title: const Text('Tu perfil'),
+        // Solo hay a dónde volver si ya existe otro usuario cargado
+        // (llegaste acá desde el selector). En el primer arranque de la
+        // app no mostramos flecha porque no hay pantalla previa.
+        leading: ref.watch(nombresUsuariosProvider).isEmpty
+            ? null
+            : BackButton(onPressed: () => context.go('/usuarios')),
+      ),
       body: PageView(
         controller: _pageController,
         // Bloqueamos el swipe manual: se avanza solo con los botones,
@@ -304,7 +312,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 _filaDato('Carbohidratos', '${macros.carbohidratosG.round()} g'),
                 _filaDato('Grasas', '${macros.grasasG.round()} g'),
                 const Divider(),
-                _filaDato('Agua', '$_aguaMl ml (~${(_aguaMl / 250).round()} vasos)'),
+                _filaDato('Agua',
+                    '${(_aguaMl / 1000).toStringAsFixed(1)} L por día'),
               ],
             ),
           ),

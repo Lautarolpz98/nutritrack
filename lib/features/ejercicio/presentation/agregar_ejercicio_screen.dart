@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../app/appbar_volver.dart';
 import '../../../core/database/database.dart';
 import '../../perfil/presentation/perfil_providers.dart';
 import '../domain/calculo_ejercicio.dart';
@@ -83,7 +84,7 @@ class _AgregarEjercicioScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Agregar ejercicio')),
+      appBar: appBarConVolver(context, 'Agregar ejercicio'),
       body: Form(
         key: _formKey,
         child: ListView(

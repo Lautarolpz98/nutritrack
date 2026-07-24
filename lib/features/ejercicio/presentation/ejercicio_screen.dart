@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../app/appbar_volver.dart';
 import '../../../core/database/database.dart';
 import 'ejercicio_providers.dart';
 
@@ -15,7 +16,7 @@ class EjercicioScreen extends ConsumerWidget {
     final ejerciciosAsync = ref.watch(ejerciciosDeHoyProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Ejercicio de hoy')),
+      appBar: appBarConVolver(context, 'Ejercicio de hoy'),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => context.push('/ejercicio/agregar'),
         icon: const Icon(Icons.add),

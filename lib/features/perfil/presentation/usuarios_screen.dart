@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../app/appbar_volver.dart';
 import '../../../core/preferencias/usuarios_provider.dart';
 
 /// Selector de usuarios: hasta 3 perfiles independientes, sin contraseñas.
@@ -25,7 +26,7 @@ class UsuariosScreen extends ConsumerWidget {
     final nombres = ref.watch(nombresUsuariosProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Usuarios')),
+      appBar: appBarConVolver(context, 'Usuarios'),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [

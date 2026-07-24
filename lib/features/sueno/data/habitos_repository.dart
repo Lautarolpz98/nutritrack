@@ -28,13 +28,15 @@ class HabitosRepository {
         .map((filas) => filas.fold(0, (suma, f) => suma + f.ml));
   }
 
-  Future<void> agregarVaso({int ml = 250}) {
+  /// Registra una toma de agua. El default de 250 ml es lo que suma el
+  /// botón rápido del dashboard.
+  Future<void> agregarAgua({int ml = 250}) {
     return _db.into(_db.waterEntries).insert(
         WaterEntriesCompanion.insert(fecha: DateTime.now(), ml: Value(ml)));
   }
 
-  /// Deshace el último vaso del día (por si tocaste de más).
-  Future<void> quitarUltimoVaso() async {
+  /// Deshace la última toma del día (por si tocaste de más).
+  Future<void> quitarUltimaToma() async {
     final (inicio, fin) = _rangoDia(DateTime.now());
     final ultimo = await (_db.select(_db.waterEntries)
           ..where((t) =>

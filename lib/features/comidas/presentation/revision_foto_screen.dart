@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../app/appbar_volver.dart';
 import '../../../core/database/database.dart';
 import '../../../core/modelos/enums.dart';
 import '../domain/analisis_foto.dart';
@@ -108,7 +109,7 @@ class _RevisionFotoScreenState extends ConsumerState<RevisionFotoScreen> {
   Widget build(BuildContext context) {
     final confianza = widget.analisis.confianza;
     return Scaffold(
-      appBar: AppBar(title: const Text('Revisar detección')),
+      appBar: appBarConVolver(context, 'Revisar detección'),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [

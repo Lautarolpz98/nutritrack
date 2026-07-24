@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../app/appbar_volver.dart';
 import '../../../core/ia/api_key_storage.dart';
 import '../../../core/ia/gemini_api_service.dart';
 
@@ -92,7 +93,7 @@ class _AnalizarFotoScreenState extends ConsumerState<AnalizarFotoScreen> {
     final hayKey = ref.watch(apiKeyProvider).value?.isNotEmpty == true;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Foto con IA')),
+      appBar: appBarConVolver(context, 'Foto con IA'),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [

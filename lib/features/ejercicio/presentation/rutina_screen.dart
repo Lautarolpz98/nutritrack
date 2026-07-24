@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../app/appbar_volver.dart';
 import '../../../core/ia/gemini_api_service.dart';
 import '../../perfil/presentation/perfil_providers.dart';
 import '../domain/rutina_sugerida.dart';
@@ -91,7 +92,7 @@ class _RutinaScreenState extends ConsumerState<RutinaScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Rutina sugerida')),
+      appBar: appBarConVolver(context, 'Rutina sugerida'),
       body: Column(
         children: [
           // Selector de tipo de entrenamiento: cambiarlo regenera la rutina.

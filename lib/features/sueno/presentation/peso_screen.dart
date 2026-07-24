@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../../app/appbar_volver.dart';
 import '../../../core/database/database.dart';
 import '../../perfil/domain/unidades.dart';
 import '../../perfil/presentation/perfil_providers.dart';
@@ -18,7 +19,7 @@ class PesoScreen extends ConsumerWidget {
     final unidad = ref.watch(perfilActualProvider).value?.unidadPeso ?? 'kg';
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Peso corporal')),
+      appBar: appBarConVolver(context, 'Peso corporal'),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _dialogoRegistrar(context, ref, unidad),
         icon: const Icon(Icons.add),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../app/appbar_volver.dart';
 import '../../../core/database/database.dart';
 import '../../../core/modelos/enums.dart';
 import 'comidas_providers.dart';
@@ -78,7 +79,7 @@ class _ProductoEscaneadoScreenState
   Widget build(BuildContext context) {
     final p = widget.producto;
     return Scaffold(
-      appBar: AppBar(title: const Text('Producto escaneado')),
+      appBar: appBarConVolver(context, 'Producto escaneado'),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
