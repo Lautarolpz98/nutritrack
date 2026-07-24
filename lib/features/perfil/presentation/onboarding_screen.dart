@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../core/database/database.dart';
 import '../../../core/modelos/enums.dart';
+import '../../../core/preferencias/usuarios_provider.dart';
 import '../domain/calculo_energetico.dart';
 import 'perfil_providers.dart';
 
@@ -106,6 +107,12 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             objetivoSuenoHoras: Value(sueno),
           ),
         );
+
+    // Registramos el nombre en el selector de usuarios.
+    final slot = ref.read(usuarioActivoProvider);
+    await ref
+        .read(nombresUsuariosProvider.notifier)
+        .registrar(slot, _nombreCtrl.text.trim());
 
     if (mounted) context.go('/');
   }

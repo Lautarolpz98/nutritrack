@@ -82,14 +82,25 @@ Reglas:
     return ExitoIA(analisis);
   }
 
-  /// Sugiere la rutina de ejercicios del día según perfil e historial.
+  /// Sugiere la rutina de ejercicios del día según perfil, historial y
+  /// dónde va a entrenar la persona (gimnasio o casa).
   Future<ResultadoIA<RutinaSugerida>> sugerirRutina({
     required String contextoUsuario,
     required String historial7Dias,
+    required bool enGimnasio,
   }) async {
+    final equipamiento = enGimnasio
+        ? 'La rutina es para GIMNASIO: hay acceso a máquinas, barras, '
+            'discos, mancuernas de todos los pesos y cintas/bicicletas.'
+        : 'La rutina es PARA HACER EN CASA con poco o ningún equipamiento: '
+            'peso corporal y, como mucho, mancuernas livianas o bandas '
+            'elásticas. También sirven actividades como caminar o correr.';
+
     final prompt = '''
 Sos un entrenador personal. Armá una rutina de ejercicio PARA HOY para esta persona:
 $contextoUsuario
+
+$equipamiento
 
 Historial de ejercicio de los últimos 7 días:
 $historial7Dias
@@ -98,7 +109,7 @@ Respondé SOLO con un JSON válido, sin texto adicional, con exactamente este fo
 {"ejercicios": [{"nombre": "string", "series": 0, "repeticiones": 0, "duracion_min": 0, "descripcion": "string"}], "notas": "string"}
 
 Reglas:
-- Entre 4 y 8 ejercicios, realistas para el nivel de la persona y sin equipamiento sofisticado (peso corporal, mancuernas básicas, o actividades como caminar/correr).
+- Entre 4 y 8 ejercicios, realistas para el nivel de la persona y coherentes con el equipamiento indicado.
 - Usá null en series/repeticiones si no aplican (ej: caminata) y null en duracion_min si no aplica (ej: sentadillas por repeticiones).
 - "descripcion" corta: cómo hacerlo y a qué prestarle atención.
 - En "notas" poné un consejo general del día (descanso, hidratación, etc.). Español rioplatense.''';

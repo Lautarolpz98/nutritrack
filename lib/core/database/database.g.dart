@@ -155,6 +155,18 @@ class $UserProfilesTable extends UserProfiles
         requiredDuringInsert: false,
         defaultValue: const Constant(8),
       );
+  static const VerificationMeta _objetivoPasosMeta = const VerificationMeta(
+    'objetivoPasos',
+  );
+  @override
+  late final GeneratedColumn<int> objetivoPasos = GeneratedColumn<int>(
+    'objetivo_pasos',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(10000),
+  );
   static const VerificationMeta _unidadPesoMeta = const VerificationMeta(
     'unidadPeso',
   );
@@ -196,6 +208,7 @@ class $UserProfilesTable extends UserProfiles
     objetivoGrasasG,
     objetivoAguaMl,
     objetivoSuenoHoras,
+    objetivoPasos,
     unidadPeso,
     actualizadoEn,
   ];
@@ -308,6 +321,15 @@ class $UserProfilesTable extends UserProfiles
         ),
       );
     }
+    if (data.containsKey('objetivo_pasos')) {
+      context.handle(
+        _objetivoPasosMeta,
+        objetivoPasos.isAcceptableOrUnknown(
+          data['objetivo_pasos']!,
+          _objetivoPasosMeta,
+        ),
+      );
+    }
     if (data.containsKey('unidad_peso')) {
       context.handle(
         _unidadPesoMeta,
@@ -394,6 +416,10 @@ class $UserProfilesTable extends UserProfiles
         DriftSqlType.double,
         data['${effectivePrefix}objetivo_sueno_horas'],
       )!,
+      objetivoPasos: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}objetivo_pasos'],
+      )!,
       unidadPeso: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}unidad_peso'],
@@ -435,6 +461,7 @@ class UserProfile extends DataClass implements Insertable<UserProfile> {
   final double objetivoGrasasG;
   final int objetivoAguaMl;
   final double objetivoSuenoHoras;
+  final int objetivoPasos;
   final String unidadPeso;
   final DateTime actualizadoEn;
   const UserProfile({
@@ -452,6 +479,7 @@ class UserProfile extends DataClass implements Insertable<UserProfile> {
     required this.objetivoGrasasG,
     required this.objetivoAguaMl,
     required this.objetivoSuenoHoras,
+    required this.objetivoPasos,
     required this.unidadPeso,
     required this.actualizadoEn,
   });
@@ -484,6 +512,7 @@ class UserProfile extends DataClass implements Insertable<UserProfile> {
     map['objetivo_grasas_g'] = Variable<double>(objetivoGrasasG);
     map['objetivo_agua_ml'] = Variable<int>(objetivoAguaMl);
     map['objetivo_sueno_horas'] = Variable<double>(objetivoSuenoHoras);
+    map['objetivo_pasos'] = Variable<int>(objetivoPasos);
     map['unidad_peso'] = Variable<String>(unidadPeso);
     map['actualizado_en'] = Variable<DateTime>(actualizadoEn);
     return map;
@@ -505,6 +534,7 @@ class UserProfile extends DataClass implements Insertable<UserProfile> {
       objetivoGrasasG: Value(objetivoGrasasG),
       objetivoAguaMl: Value(objetivoAguaMl),
       objetivoSuenoHoras: Value(objetivoSuenoHoras),
+      objetivoPasos: Value(objetivoPasos),
       unidadPeso: Value(unidadPeso),
       actualizadoEn: Value(actualizadoEn),
     );
@@ -542,6 +572,7 @@ class UserProfile extends DataClass implements Insertable<UserProfile> {
       objetivoSuenoHoras: serializer.fromJson<double>(
         json['objetivoSuenoHoras'],
       ),
+      objetivoPasos: serializer.fromJson<int>(json['objetivoPasos']),
       unidadPeso: serializer.fromJson<String>(json['unidadPeso']),
       actualizadoEn: serializer.fromJson<DateTime>(json['actualizadoEn']),
     );
@@ -572,6 +603,7 @@ class UserProfile extends DataClass implements Insertable<UserProfile> {
       'objetivoGrasasG': serializer.toJson<double>(objetivoGrasasG),
       'objetivoAguaMl': serializer.toJson<int>(objetivoAguaMl),
       'objetivoSuenoHoras': serializer.toJson<double>(objetivoSuenoHoras),
+      'objetivoPasos': serializer.toJson<int>(objetivoPasos),
       'unidadPeso': serializer.toJson<String>(unidadPeso),
       'actualizadoEn': serializer.toJson<DateTime>(actualizadoEn),
     };
@@ -592,6 +624,7 @@ class UserProfile extends DataClass implements Insertable<UserProfile> {
     double? objetivoGrasasG,
     int? objetivoAguaMl,
     double? objetivoSuenoHoras,
+    int? objetivoPasos,
     String? unidadPeso,
     DateTime? actualizadoEn,
   }) => UserProfile(
@@ -610,6 +643,7 @@ class UserProfile extends DataClass implements Insertable<UserProfile> {
     objetivoGrasasG: objetivoGrasasG ?? this.objetivoGrasasG,
     objetivoAguaMl: objetivoAguaMl ?? this.objetivoAguaMl,
     objetivoSuenoHoras: objetivoSuenoHoras ?? this.objetivoSuenoHoras,
+    objetivoPasos: objetivoPasos ?? this.objetivoPasos,
     unidadPeso: unidadPeso ?? this.unidadPeso,
     actualizadoEn: actualizadoEn ?? this.actualizadoEn,
   );
@@ -643,6 +677,9 @@ class UserProfile extends DataClass implements Insertable<UserProfile> {
       objetivoSuenoHoras: data.objetivoSuenoHoras.present
           ? data.objetivoSuenoHoras.value
           : this.objetivoSuenoHoras,
+      objetivoPasos: data.objetivoPasos.present
+          ? data.objetivoPasos.value
+          : this.objetivoPasos,
       unidadPeso: data.unidadPeso.present
           ? data.unidadPeso.value
           : this.unidadPeso,
@@ -669,6 +706,7 @@ class UserProfile extends DataClass implements Insertable<UserProfile> {
           ..write('objetivoGrasasG: $objetivoGrasasG, ')
           ..write('objetivoAguaMl: $objetivoAguaMl, ')
           ..write('objetivoSuenoHoras: $objetivoSuenoHoras, ')
+          ..write('objetivoPasos: $objetivoPasos, ')
           ..write('unidadPeso: $unidadPeso, ')
           ..write('actualizadoEn: $actualizadoEn')
           ..write(')'))
@@ -691,6 +729,7 @@ class UserProfile extends DataClass implements Insertable<UserProfile> {
     objetivoGrasasG,
     objetivoAguaMl,
     objetivoSuenoHoras,
+    objetivoPasos,
     unidadPeso,
     actualizadoEn,
   );
@@ -712,6 +751,7 @@ class UserProfile extends DataClass implements Insertable<UserProfile> {
           other.objetivoGrasasG == this.objetivoGrasasG &&
           other.objetivoAguaMl == this.objetivoAguaMl &&
           other.objetivoSuenoHoras == this.objetivoSuenoHoras &&
+          other.objetivoPasos == this.objetivoPasos &&
           other.unidadPeso == this.unidadPeso &&
           other.actualizadoEn == this.actualizadoEn);
 }
@@ -731,6 +771,7 @@ class UserProfilesCompanion extends UpdateCompanion<UserProfile> {
   final Value<double> objetivoGrasasG;
   final Value<int> objetivoAguaMl;
   final Value<double> objetivoSuenoHoras;
+  final Value<int> objetivoPasos;
   final Value<String> unidadPeso;
   final Value<DateTime> actualizadoEn;
   const UserProfilesCompanion({
@@ -748,6 +789,7 @@ class UserProfilesCompanion extends UpdateCompanion<UserProfile> {
     this.objetivoGrasasG = const Value.absent(),
     this.objetivoAguaMl = const Value.absent(),
     this.objetivoSuenoHoras = const Value.absent(),
+    this.objetivoPasos = const Value.absent(),
     this.unidadPeso = const Value.absent(),
     this.actualizadoEn = const Value.absent(),
   });
@@ -766,6 +808,7 @@ class UserProfilesCompanion extends UpdateCompanion<UserProfile> {
     required double objetivoGrasasG,
     required int objetivoAguaMl,
     this.objetivoSuenoHoras = const Value.absent(),
+    this.objetivoPasos = const Value.absent(),
     this.unidadPeso = const Value.absent(),
     this.actualizadoEn = const Value.absent(),
   }) : edad = Value(edad),
@@ -794,6 +837,7 @@ class UserProfilesCompanion extends UpdateCompanion<UserProfile> {
     Expression<double>? objetivoGrasasG,
     Expression<int>? objetivoAguaMl,
     Expression<double>? objetivoSuenoHoras,
+    Expression<int>? objetivoPasos,
     Expression<String>? unidadPeso,
     Expression<DateTime>? actualizadoEn,
   }) {
@@ -815,6 +859,7 @@ class UserProfilesCompanion extends UpdateCompanion<UserProfile> {
       if (objetivoAguaMl != null) 'objetivo_agua_ml': objetivoAguaMl,
       if (objetivoSuenoHoras != null)
         'objetivo_sueno_horas': objetivoSuenoHoras,
+      if (objetivoPasos != null) 'objetivo_pasos': objetivoPasos,
       if (unidadPeso != null) 'unidad_peso': unidadPeso,
       if (actualizadoEn != null) 'actualizado_en': actualizadoEn,
     });
@@ -835,6 +880,7 @@ class UserProfilesCompanion extends UpdateCompanion<UserProfile> {
     Value<double>? objetivoGrasasG,
     Value<int>? objetivoAguaMl,
     Value<double>? objetivoSuenoHoras,
+    Value<int>? objetivoPasos,
     Value<String>? unidadPeso,
     Value<DateTime>? actualizadoEn,
   }) {
@@ -854,6 +900,7 @@ class UserProfilesCompanion extends UpdateCompanion<UserProfile> {
       objetivoGrasasG: objetivoGrasasG ?? this.objetivoGrasasG,
       objetivoAguaMl: objetivoAguaMl ?? this.objetivoAguaMl,
       objetivoSuenoHoras: objetivoSuenoHoras ?? this.objetivoSuenoHoras,
+      objetivoPasos: objetivoPasos ?? this.objetivoPasos,
       unidadPeso: unidadPeso ?? this.unidadPeso,
       actualizadoEn: actualizadoEn ?? this.actualizadoEn,
     );
@@ -912,6 +959,9 @@ class UserProfilesCompanion extends UpdateCompanion<UserProfile> {
     if (objetivoSuenoHoras.present) {
       map['objetivo_sueno_horas'] = Variable<double>(objetivoSuenoHoras.value);
     }
+    if (objetivoPasos.present) {
+      map['objetivo_pasos'] = Variable<int>(objetivoPasos.value);
+    }
     if (unidadPeso.present) {
       map['unidad_peso'] = Variable<String>(unidadPeso.value);
     }
@@ -938,6 +988,7 @@ class UserProfilesCompanion extends UpdateCompanion<UserProfile> {
           ..write('objetivoGrasasG: $objetivoGrasasG, ')
           ..write('objetivoAguaMl: $objetivoAguaMl, ')
           ..write('objetivoSuenoHoras: $objetivoSuenoHoras, ')
+          ..write('objetivoPasos: $objetivoPasos, ')
           ..write('unidadPeso: $unidadPeso, ')
           ..write('actualizadoEn: $actualizadoEn')
           ..write(')'))
@@ -2862,6 +2913,270 @@ class WeightEntriesCompanion extends UpdateCompanion<WeightEntry> {
   }
 }
 
+class $StepDaysTable extends StepDays with TableInfo<$StepDaysTable, StepDay> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $StepDaysTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _fechaMeta = const VerificationMeta('fecha');
+  @override
+  late final GeneratedColumn<DateTime> fecha = GeneratedColumn<DateTime>(
+    'fecha',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _pasosMeta = const VerificationMeta('pasos');
+  @override
+  late final GeneratedColumn<int> pasos = GeneratedColumn<int>(
+    'pasos',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _ultimoValorSensorMeta = const VerificationMeta(
+    'ultimoValorSensor',
+  );
+  @override
+  late final GeneratedColumn<int> ultimoValorSensor = GeneratedColumn<int>(
+    'ultimo_valor_sensor',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [fecha, pasos, ultimoValorSensor];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'step_days';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<StepDay> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('fecha')) {
+      context.handle(
+        _fechaMeta,
+        fecha.isAcceptableOrUnknown(data['fecha']!, _fechaMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_fechaMeta);
+    }
+    if (data.containsKey('pasos')) {
+      context.handle(
+        _pasosMeta,
+        pasos.isAcceptableOrUnknown(data['pasos']!, _pasosMeta),
+      );
+    }
+    if (data.containsKey('ultimo_valor_sensor')) {
+      context.handle(
+        _ultimoValorSensorMeta,
+        ultimoValorSensor.isAcceptableOrUnknown(
+          data['ultimo_valor_sensor']!,
+          _ultimoValorSensorMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_ultimoValorSensorMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {fecha};
+  @override
+  StepDay map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return StepDay(
+      fecha: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}fecha'],
+      )!,
+      pasos: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}pasos'],
+      )!,
+      ultimoValorSensor: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}ultimo_valor_sensor'],
+      )!,
+    );
+  }
+
+  @override
+  $StepDaysTable createAlias(String alias) {
+    return $StepDaysTable(attachedDatabase, alias);
+  }
+}
+
+class StepDay extends DataClass implements Insertable<StepDay> {
+  final DateTime fecha;
+  final int pasos;
+  final int ultimoValorSensor;
+  const StepDay({
+    required this.fecha,
+    required this.pasos,
+    required this.ultimoValorSensor,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['fecha'] = Variable<DateTime>(fecha);
+    map['pasos'] = Variable<int>(pasos);
+    map['ultimo_valor_sensor'] = Variable<int>(ultimoValorSensor);
+    return map;
+  }
+
+  StepDaysCompanion toCompanion(bool nullToAbsent) {
+    return StepDaysCompanion(
+      fecha: Value(fecha),
+      pasos: Value(pasos),
+      ultimoValorSensor: Value(ultimoValorSensor),
+    );
+  }
+
+  factory StepDay.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return StepDay(
+      fecha: serializer.fromJson<DateTime>(json['fecha']),
+      pasos: serializer.fromJson<int>(json['pasos']),
+      ultimoValorSensor: serializer.fromJson<int>(json['ultimoValorSensor']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'fecha': serializer.toJson<DateTime>(fecha),
+      'pasos': serializer.toJson<int>(pasos),
+      'ultimoValorSensor': serializer.toJson<int>(ultimoValorSensor),
+    };
+  }
+
+  StepDay copyWith({DateTime? fecha, int? pasos, int? ultimoValorSensor}) =>
+      StepDay(
+        fecha: fecha ?? this.fecha,
+        pasos: pasos ?? this.pasos,
+        ultimoValorSensor: ultimoValorSensor ?? this.ultimoValorSensor,
+      );
+  StepDay copyWithCompanion(StepDaysCompanion data) {
+    return StepDay(
+      fecha: data.fecha.present ? data.fecha.value : this.fecha,
+      pasos: data.pasos.present ? data.pasos.value : this.pasos,
+      ultimoValorSensor: data.ultimoValorSensor.present
+          ? data.ultimoValorSensor.value
+          : this.ultimoValorSensor,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('StepDay(')
+          ..write('fecha: $fecha, ')
+          ..write('pasos: $pasos, ')
+          ..write('ultimoValorSensor: $ultimoValorSensor')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(fecha, pasos, ultimoValorSensor);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is StepDay &&
+          other.fecha == this.fecha &&
+          other.pasos == this.pasos &&
+          other.ultimoValorSensor == this.ultimoValorSensor);
+}
+
+class StepDaysCompanion extends UpdateCompanion<StepDay> {
+  final Value<DateTime> fecha;
+  final Value<int> pasos;
+  final Value<int> ultimoValorSensor;
+  final Value<int> rowid;
+  const StepDaysCompanion({
+    this.fecha = const Value.absent(),
+    this.pasos = const Value.absent(),
+    this.ultimoValorSensor = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  StepDaysCompanion.insert({
+    required DateTime fecha,
+    this.pasos = const Value.absent(),
+    required int ultimoValorSensor,
+    this.rowid = const Value.absent(),
+  }) : fecha = Value(fecha),
+       ultimoValorSensor = Value(ultimoValorSensor);
+  static Insertable<StepDay> custom({
+    Expression<DateTime>? fecha,
+    Expression<int>? pasos,
+    Expression<int>? ultimoValorSensor,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (fecha != null) 'fecha': fecha,
+      if (pasos != null) 'pasos': pasos,
+      if (ultimoValorSensor != null) 'ultimo_valor_sensor': ultimoValorSensor,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  StepDaysCompanion copyWith({
+    Value<DateTime>? fecha,
+    Value<int>? pasos,
+    Value<int>? ultimoValorSensor,
+    Value<int>? rowid,
+  }) {
+    return StepDaysCompanion(
+      fecha: fecha ?? this.fecha,
+      pasos: pasos ?? this.pasos,
+      ultimoValorSensor: ultimoValorSensor ?? this.ultimoValorSensor,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (fecha.present) {
+      map['fecha'] = Variable<DateTime>(fecha.value);
+    }
+    if (pasos.present) {
+      map['pasos'] = Variable<int>(pasos.value);
+    }
+    if (ultimoValorSensor.present) {
+      map['ultimo_valor_sensor'] = Variable<int>(ultimoValorSensor.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('StepDaysCompanion(')
+          ..write('fecha: $fecha, ')
+          ..write('pasos: $pasos, ')
+          ..write('ultimoValorSensor: $ultimoValorSensor, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $ProductsTable extends Products with TableInfo<$ProductsTable, Product> {
   @override
   final GeneratedDatabase attachedDatabase;
@@ -3358,6 +3673,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $SleepEntriesTable sleepEntries = $SleepEntriesTable(this);
   late final $WaterEntriesTable waterEntries = $WaterEntriesTable(this);
   late final $WeightEntriesTable weightEntries = $WeightEntriesTable(this);
+  late final $StepDaysTable stepDays = $StepDaysTable(this);
   late final $ProductsTable products = $ProductsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
@@ -3370,6 +3686,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     sleepEntries,
     waterEntries,
     weightEntries,
+    stepDays,
     products,
   ];
 }
@@ -3390,6 +3707,7 @@ typedef $$UserProfilesTableCreateCompanionBuilder =
       required double objetivoGrasasG,
       required int objetivoAguaMl,
       Value<double> objetivoSuenoHoras,
+      Value<int> objetivoPasos,
       Value<String> unidadPeso,
       Value<DateTime> actualizadoEn,
     });
@@ -3409,6 +3727,7 @@ typedef $$UserProfilesTableUpdateCompanionBuilder =
       Value<double> objetivoGrasasG,
       Value<int> objetivoAguaMl,
       Value<double> objetivoSuenoHoras,
+      Value<int> objetivoPasos,
       Value<String> unidadPeso,
       Value<DateTime> actualizadoEn,
     });
@@ -3492,6 +3811,11 @@ class $$UserProfilesTableFilterComposer
 
   ColumnFilters<double> get objetivoSuenoHoras => $composableBuilder(
     column: $table.objetivoSuenoHoras,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get objetivoPasos => $composableBuilder(
+    column: $table.objetivoPasos,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -3585,6 +3909,11 @@ class $$UserProfilesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<int> get objetivoPasos => $composableBuilder(
+    column: $table.objetivoPasos,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get unidadPeso => $composableBuilder(
     column: $table.unidadPeso,
     builder: (column) => ColumnOrderings(column),
@@ -3662,6 +3991,11 @@ class $$UserProfilesTableAnnotationComposer
     builder: (column) => column,
   );
 
+  GeneratedColumn<int> get objetivoPasos => $composableBuilder(
+    column: $table.objetivoPasos,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<String> get unidadPeso => $composableBuilder(
     column: $table.unidadPeso,
     builder: (column) => column,
@@ -3718,6 +4052,7 @@ class $$UserProfilesTableTableManager
                 Value<double> objetivoGrasasG = const Value.absent(),
                 Value<int> objetivoAguaMl = const Value.absent(),
                 Value<double> objetivoSuenoHoras = const Value.absent(),
+                Value<int> objetivoPasos = const Value.absent(),
                 Value<String> unidadPeso = const Value.absent(),
                 Value<DateTime> actualizadoEn = const Value.absent(),
               }) => UserProfilesCompanion(
@@ -3735,6 +4070,7 @@ class $$UserProfilesTableTableManager
                 objetivoGrasasG: objetivoGrasasG,
                 objetivoAguaMl: objetivoAguaMl,
                 objetivoSuenoHoras: objetivoSuenoHoras,
+                objetivoPasos: objetivoPasos,
                 unidadPeso: unidadPeso,
                 actualizadoEn: actualizadoEn,
               ),
@@ -3754,6 +4090,7 @@ class $$UserProfilesTableTableManager
                 required double objetivoGrasasG,
                 required int objetivoAguaMl,
                 Value<double> objetivoSuenoHoras = const Value.absent(),
+                Value<int> objetivoPasos = const Value.absent(),
                 Value<String> unidadPeso = const Value.absent(),
                 Value<DateTime> actualizadoEn = const Value.absent(),
               }) => UserProfilesCompanion.insert(
@@ -3771,6 +4108,7 @@ class $$UserProfilesTableTableManager
                 objetivoGrasasG: objetivoGrasasG,
                 objetivoAguaMl: objetivoAguaMl,
                 objetivoSuenoHoras: objetivoSuenoHoras,
+                objetivoPasos: objetivoPasos,
                 unidadPeso: unidadPeso,
                 actualizadoEn: actualizadoEn,
               ),
@@ -4830,6 +5168,164 @@ typedef $$WeightEntriesTableProcessedTableManager =
       WeightEntry,
       PrefetchHooks Function()
     >;
+typedef $$StepDaysTableCreateCompanionBuilder =
+    StepDaysCompanion Function({
+      required DateTime fecha,
+      Value<int> pasos,
+      required int ultimoValorSensor,
+      Value<int> rowid,
+    });
+typedef $$StepDaysTableUpdateCompanionBuilder =
+    StepDaysCompanion Function({
+      Value<DateTime> fecha,
+      Value<int> pasos,
+      Value<int> ultimoValorSensor,
+      Value<int> rowid,
+    });
+
+class $$StepDaysTableFilterComposer
+    extends Composer<_$AppDatabase, $StepDaysTable> {
+  $$StepDaysTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<DateTime> get fecha => $composableBuilder(
+    column: $table.fecha,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get pasos => $composableBuilder(
+    column: $table.pasos,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get ultimoValorSensor => $composableBuilder(
+    column: $table.ultimoValorSensor,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$StepDaysTableOrderingComposer
+    extends Composer<_$AppDatabase, $StepDaysTable> {
+  $$StepDaysTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<DateTime> get fecha => $composableBuilder(
+    column: $table.fecha,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get pasos => $composableBuilder(
+    column: $table.pasos,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get ultimoValorSensor => $composableBuilder(
+    column: $table.ultimoValorSensor,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$StepDaysTableAnnotationComposer
+    extends Composer<_$AppDatabase, $StepDaysTable> {
+  $$StepDaysTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<DateTime> get fecha =>
+      $composableBuilder(column: $table.fecha, builder: (column) => column);
+
+  GeneratedColumn<int> get pasos =>
+      $composableBuilder(column: $table.pasos, builder: (column) => column);
+
+  GeneratedColumn<int> get ultimoValorSensor => $composableBuilder(
+    column: $table.ultimoValorSensor,
+    builder: (column) => column,
+  );
+}
+
+class $$StepDaysTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $StepDaysTable,
+          StepDay,
+          $$StepDaysTableFilterComposer,
+          $$StepDaysTableOrderingComposer,
+          $$StepDaysTableAnnotationComposer,
+          $$StepDaysTableCreateCompanionBuilder,
+          $$StepDaysTableUpdateCompanionBuilder,
+          (StepDay, BaseReferences<_$AppDatabase, $StepDaysTable, StepDay>),
+          StepDay,
+          PrefetchHooks Function()
+        > {
+  $$StepDaysTableTableManager(_$AppDatabase db, $StepDaysTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$StepDaysTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$StepDaysTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$StepDaysTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<DateTime> fecha = const Value.absent(),
+                Value<int> pasos = const Value.absent(),
+                Value<int> ultimoValorSensor = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => StepDaysCompanion(
+                fecha: fecha,
+                pasos: pasos,
+                ultimoValorSensor: ultimoValorSensor,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required DateTime fecha,
+                Value<int> pasos = const Value.absent(),
+                required int ultimoValorSensor,
+                Value<int> rowid = const Value.absent(),
+              }) => StepDaysCompanion.insert(
+                fecha: fecha,
+                pasos: pasos,
+                ultimoValorSensor: ultimoValorSensor,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$StepDaysTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $StepDaysTable,
+      StepDay,
+      $$StepDaysTableFilterComposer,
+      $$StepDaysTableOrderingComposer,
+      $$StepDaysTableAnnotationComposer,
+      $$StepDaysTableCreateCompanionBuilder,
+      $$StepDaysTableUpdateCompanionBuilder,
+      (StepDay, BaseReferences<_$AppDatabase, $StepDaysTable, StepDay>),
+      StepDay,
+      PrefetchHooks Function()
+    >;
 typedef $$ProductsTableCreateCompanionBuilder =
     ProductsCompanion Function({
       required String barcode,
@@ -5088,6 +5584,8 @@ class $AppDatabaseManager {
       $$WaterEntriesTableTableManager(_db, _db.waterEntries);
   $$WeightEntriesTableTableManager get weightEntries =>
       $$WeightEntriesTableTableManager(_db, _db.weightEntries);
+  $$StepDaysTableTableManager get stepDays =>
+      $$StepDaysTableTableManager(_db, _db.stepDays);
   $$ProductsTableTableManager get products =>
       $$ProductsTableTableManager(_db, _db.products);
 }

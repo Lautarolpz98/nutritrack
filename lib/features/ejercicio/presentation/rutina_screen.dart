@@ -22,6 +22,9 @@ class _RutinaScreenState extends ConsumerState<RutinaScreen> {
   String? _error;
   bool _errorEsDeKey = false;
 
+  /// Dónde entrena hoy: en casa (por defecto) o en el gimnasio.
+  bool _enGimnasio = false;
+
   @override
   void initState() {
     super.initState();
@@ -56,6 +59,7 @@ class _RutinaScreenState extends ConsumerState<RutinaScreen> {
     final resultado = await ref.read(geminiApiServiceProvider).sugerirRutina(
           contextoUsuario: contexto,
           historial7Dias: historial,
+          enGimnasio: _enGimnasio,
         );
 
     if (!mounted) return;
@@ -88,20 +92,51 @@ class _RutinaScreenState extends ConsumerState<RutinaScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Rutina sugerida')),
-      body: _cargando
-          ? const Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircularProgressIndicator(),
-                  SizedBox(height: 16),
-                  Text('Armando tu rutina del día...'),
-                ],
-              ),
-            )
-          : _error != null
-              ? _vistaError(context)
-              : _vistaRutina(context),
+      body: Column(
+        children: [
+          // Selector de tipo de entrenamiento: cambiarlo regenera la rutina.
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+            child: SegmentedButton<bool>(
+              segments: const [
+                ButtonSegment(
+                  value: false,
+                  icon: Icon(Icons.home_outlined),
+                  label: Text('En casa'),
+                ),
+                ButtonSegment(
+                  value: true,
+                  icon: Icon(Icons.fitness_center),
+                  label: Text('Gimnasio'),
+                ),
+              ],
+              selected: {_enGimnasio},
+              onSelectionChanged: _cargando
+                  ? null
+                  : (v) {
+                      setState(() => _enGimnasio = v.first);
+                      _pedirRutina();
+                    },
+            ),
+          ),
+          Expanded(
+            child: _cargando
+                ? const Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CircularProgressIndicator(),
+                        SizedBox(height: 16),
+                        Text('Armando tu rutina del día...'),
+                      ],
+                    ),
+                  )
+                : _error != null
+                    ? _vistaError(context)
+                    : _vistaRutina(context),
+          ),
+        ],
+      ),
     );
   }
 

@@ -13,10 +13,14 @@ NutriTrack te ayuda a registrar tu alimentación, ejercicio, sueño, hidratació
 
 ### Seguimiento diario
 - **Dashboard** con anillo de progreso de calorías (consumidas vs. objetivo), barras de macros y accesos rápidos.
-- **Ejercicio** con cálculo automático de calorías por tablas MET, y rutinas del día sugeridas por IA según tu perfil e historial.
+- **Contador de pasos** 🚶 con el sensor del teléfono: pasos del día contra tu objetivo, con calorías estimadas que se suman a las quemadas.
+- **Ejercicio** con cálculo automático de calorías por tablas MET, y rutinas del día sugeridas por IA (elegís **gimnasio** o **en casa con poco equipamiento**) según tu perfil e historial.
 - **Sueño** por duración directa u horarios de acostarse/levantarse.
 - **Agua** con botón rápido de +1 vaso.
 - **Peso corporal** con gráfico de evolución.
+
+### Multi-usuario sin cuentas
+- Hasta **3 usuarios** en el mismo teléfono, sin registro ni contraseñas: cada uno tiene su propia base de datos local, con datos e historial totalmente aislados.
 
 ### Historial y datos
 - **Calendario**: tocá cualquier día y mirá su resumen completo.

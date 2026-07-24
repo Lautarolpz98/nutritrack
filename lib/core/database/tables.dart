@@ -28,6 +28,8 @@ class UserProfiles extends Table {
   IntColumn get objetivoAguaMl => integer()();
   RealColumn get objetivoSuenoHoras => real().withDefault(const Constant(8))();
 
+  IntColumn get objetivoPasos => integer().withDefault(const Constant(10000))();
+
   // Preferencias
   TextColumn get unidadPeso => text().withDefault(const Constant('kg'))();
 
@@ -80,6 +82,20 @@ class WeightEntries extends Table {
   IntColumn get id => integer().autoIncrement()();
   DateTimeColumn get fecha => dateTime()();
   RealColumn get pesoKg => real()();
+}
+
+/// Pasos caminados por día. Una fila por día calendario.
+///
+/// El sensor de Android entrega un contador ACUMULADO desde el último
+/// reinicio del teléfono; acá guardamos el último valor leído para poder
+/// calcular la diferencia en la próxima lectura (ver domain/calculo_pasos).
+class StepDays extends Table {
+  DateTimeColumn get fecha => dateTime()(); // inicio del día (00:00)
+  IntColumn get pasos => integer().withDefault(const Constant(0))();
+  IntColumn get ultimoValorSensor => integer()();
+
+  @override
+  Set<Column> get primaryKey => {fecha};
 }
 
 /// Cache de productos consultados en Open Food Facts, indexado por barcode.

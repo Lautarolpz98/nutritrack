@@ -14,6 +14,7 @@ import '../features/ejercicio/presentation/ejercicio_screen.dart';
 import '../features/ejercicio/presentation/rutina_screen.dart';
 import '../features/historial/presentation/historial_screen.dart';
 import '../features/perfil/presentation/onboarding_screen.dart';
+import '../features/perfil/presentation/usuarios_screen.dart';
 import '../features/sueno/presentation/peso_screen.dart';
 import 'splash_screen.dart';
 
@@ -86,6 +87,10 @@ final router = GoRouter(
     GoRoute(
       path: '/historial',
       builder: (context, state) => const HistorialScreen(),
+    ),
+    GoRoute(
+      path: '/usuarios',
+      builder: (context, state) => const UsuariosScreen(),
     ),
   ],
 );

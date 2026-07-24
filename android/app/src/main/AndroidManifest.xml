@@ -1,6 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Permiso para leer el sensor de pasos (Android 10+ lo pide en runtime) -->
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
     <application
-        android:label="nutritrack"
+        android:label="NutriTrack"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

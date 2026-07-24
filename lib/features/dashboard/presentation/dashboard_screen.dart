@@ -8,6 +8,8 @@ import '../../../core/modelos/enums.dart';
 import '../../comidas/domain/totales_dia.dart';
 import '../../comidas/presentation/comidas_providers.dart';
 import '../../ejercicio/presentation/ejercicio_providers.dart';
+import '../../pasos/domain/calculo_pasos.dart';
+import '../../pasos/presentation/pasos_providers.dart';
 import '../../perfil/domain/unidades.dart';
 import '../../perfil/presentation/perfil_providers.dart';
 import '../../sueno/presentation/habitos_providers.dart';
@@ -30,6 +32,11 @@ class DashboardScreen extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('NutriTrack'),
         actions: [
+          IconButton(
+            tooltip: 'Usuarios',
+            icon: const Icon(Icons.people_outline),
+            onPressed: () => context.push('/usuarios'),
+          ),
           IconButton(
             tooltip: 'Historial',
             icon: const Icon(Icons.calendar_month_outlined),
@@ -142,14 +149,35 @@ class DashboardScreen extends ConsumerWidget {
     final sueno = ref.watch(suenoDeHoyProvider).value;
     final pesos = ref.watch(pesosProvider).value ?? [];
 
+    // Enciende el contador de pasos (pide permiso y escucha el sensor).
+    final estadoContador = ref.watch(contadorPasosProvider);
+    final pasos = ref.watch(pasosDeHoyProvider).value ?? 0;
+    final kcalPasos = caloriasPorPasos(pasos, perfil.pesoKg);
+
+    // Las calorías de los pasos se suman a las quemadas del día.
     final kcalEjercicio =
-        ejercicios.fold<double>(0, (s, e) => s + e.caloriasQuemadas);
+        ejercicios.fold<double>(0, (s, e) => s + e.caloriasQuemadas) +
+            kcalPasos;
     final vasos = (aguaMl / 250).round();
     final vasosObjetivo = (perfil.objetivoAguaMl / 250).ceil();
     final ultimoPeso = pesos.isEmpty ? null : pesos.last.pesoKg;
 
+    final textoPasos = switch (estadoContador) {
+      EstadoContador.sinPermiso => 'Sin permiso de actividad',
+      EstadoContador.sinSensor => 'Sensor no disponible',
+      _ => '$pasos / ${perfil.objetivoPasos} · ~${kcalPasos.round()} kcal',
+    };
+
     return Column(
       children: [
+        _tarjetaHabito(
+          context,
+          emoji: '🚶',
+          titulo: 'Pasos de hoy',
+          valor: textoPasos,
+          onTap: () {},
+        ),
+        const SizedBox(height: 8),
         Row(
           children: [
             Expanded(
